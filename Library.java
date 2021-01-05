@@ -12,7 +12,8 @@ public class Library {
     }
     //method 1
     public Author mostPopular(){
-        int flag=0, mostBooks=0, mostBooksLocation=0;
+        boolean inList = false;
+        int mostBooks=0, mostBooksLocation=0;
         //list of all authors
         ArrayList<Author> authors=new ArrayList<>();
         //list of how many books each of the authors has
@@ -20,10 +21,10 @@ public class Library {
         //add new authors to the "authors" ArrayList
         for (int i=0; i< books.size();i++){
             for(int j=0;j< authors.size();j++){
-                if(books.get(i).getAuthor()==authors.get(j))flag=1;
+                if(books.get(i).getAuthor()==authors.get(j))inList=true;
             }
             //if the author isn't in the list add him and set his book amount to 1
-            if (flag==0){
+            if (inList==false){
                 authors.add(books.get(i).getAuthor());
                 booksPerAuthor.add(1);
             }
@@ -42,5 +43,33 @@ public class Library {
             }
         }
         return authors.get(mostBooksLocation);
+    }
+    //method 2
+    public ArrayList<Book> available(){
+        ArrayList<Book> availableBooks=new ArrayList<>();
+        for(int i = 0; i< books.size();i++){
+            for(int j = 0; j< rental.size();i++){
+                if (books.get(i)==rental.get(j).book)availableBooks.add(books.get(i));
+            }
+        }
+        return availableBooks;
+    }
+    //method 3
+    public int totalEarnings(){
+        int totalSum=0;
+        for (int i = 0; i< rental.size();i++){
+            totalSum+= rental.get(i).costOf();
+        }
+        return totalSum;
+    }
+    //method 4
+    public boolean rentBook(Book book,Date date,String id){
+        for (int i = 0; i < available().size();i++){
+            if(available().get(i)==book){
+                rental.add(new Rental(book,id,date));
+                return true;
+            }
+        }
+        return false;
     }
 }
